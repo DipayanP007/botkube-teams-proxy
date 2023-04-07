@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: botkube-teams-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: botkube-teams-proxy
+  template:
+    metadata:
+      labels:
+        app: botkube-teams-proxy
+    spec:
+      containers:
+        - name: proxy
+          image: dipayanp007/botkube-teams-proxy:latest
+          imagePullPolicy: Always
+          resources: {}
+          envFrom:
+            - configMapRef:
+                name: botkube-teams-config
+            - secretRef:
+                name: botkube-teams-webhook
+          ports:
+            - containerPort: 4000
+              name: proxyport
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: proxyport
+            initialDelaySeconds: 8
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: proxyport
+            initialDelaySeconds: 5
