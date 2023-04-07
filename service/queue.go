@@ -5,9 +5,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/rs/zerolog/log"
-	// "log"
 	"time"
+
+	"github.com/rs/zerolog/log"
 
 	"github.com/DipayanP007/botkube-teams-proxy/initializers"
 	"github.com/DipayanP007/botkube-teams-proxy/models"

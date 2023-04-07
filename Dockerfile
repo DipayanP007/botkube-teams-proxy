@@ -8,15 +8,14 @@ RUN go mod download
 
 ENV GOOS=linux
 
-RUN go build -o webhook-proxy
+RUN go build -o botkube-teams-proxy
 
-# CMD ["/opt/webhook-proxy"]
 
 FROM alpine
 
 WORKDIR /opt/webhook-proxy
 
-COPY --from=builder /opt/webhook-proxy .
+COPY --from=builder /opt/botkube-teams-proxy .
 COPY --from=builder /opt/.env .
 
-CMD ["/opt/webhook-proxy/webhook-proxy"]
+CMD ["/opt/webhook-proxy/botkube-teams-proxy"]

@@ -8,7 +8,6 @@ import (
 func init() {
 	err := godotenv.Load(".env")
 	if err != nil {
-		// log.Panic("NO env file")
 		log.Panic().Msg("No env file")
 	}
 }

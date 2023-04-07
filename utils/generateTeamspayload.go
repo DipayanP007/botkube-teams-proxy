@@ -3,8 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-
-	// "log"
 	"net/http"
 	"os"
 	"reflect"
@@ -12,10 +10,8 @@ import (
 
 	"github.com/DipayanP007/botkube-teams-proxy/initializers"
 	"github.com/DipayanP007/botkube-teams-proxy/models"
-
-	"github.com/rs/zerolog/log"
-
 	"github.com/fatih/structs"
+	"github.com/rs/zerolog/log"
 )
 
 func generateTeamsPayload(payload models.Payload) string {
@@ -79,7 +75,6 @@ func generateTeamsPayload(payload models.Payload) string {
 
 func PostToTeams(pay string) int {
 	payload := strings.NewReader(pay)
-	// initializers.LoadENV()
 	log.Debug().Msg(os.Getenv("WEBHOOK_URL"))
 	log.Info().Msg("Submitting payload")
 	response, err := http.Post(os.Getenv("WEBHOOK_URL"), "application/json", payload)
@@ -87,7 +82,5 @@ func PostToTeams(pay string) int {
 	log.Info().Msg("Sent alert successfully")
 	log.Debug().Int("Response code:", response.StatusCode).Msg("Response code from upstream")
 	defer response.Body.Close()
-	// content, _ := io.ReadAll(response.Body)
-	// return string(content)
 	return response.StatusCode
 }
