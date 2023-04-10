@@ -35,3 +35,10 @@ spec:
               path: /healthz
               port: proxyport
             initialDelaySeconds: 5
+          args:
+            - "sh"
+            - "-c"
+            - |
+              apk add tzdata && cp /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+              echo "Asia/Kolkata" > /etc/timezone && apk del tzdata
+              /opt/webhook-proxy/botkube-teams-proxy
