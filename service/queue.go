@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"time"
 
@@ -15,6 +16,16 @@ import (
 )
 
 func Enqueue(alert models.Alert) {
+	log.Debug().Msg("Checking if Basic Monitoring is enabled")
+	if basic_monitoring := strings.ToLower(os.Getenv("BASIC_MONITORING")); basic_monitoring == "true" {
+		log.Info().Msg("BASIC_MONITORING is enabled. Filtering only pod events")
+		if strings.ToLower(alert.Data.Kind) != "pod" {
+			log.Debug().Msg("Dropping event as kind is not pod")
+			return
+		}
+	} else {
+		log.Info().Msg("Using Verbose monitoring to capture all events.")
+	}
 	log.Info().Msg("Enqueue new alert")
 	initializers.WorkQueue <- alert
 	log.Debug().Any("Payload", alert).Msg("Alert payload added to Work Queue")
